@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>This page is secured.</h2>
+
+<div id="token" class="row">
+    <div class="col-sm-12 col-md-12">
+        <button id="get-token" class="btn btn-success" style="margin-right: 10px;">Get Token</button>
+        <pre id="token-response" class="hidden" style="margin-top: 10px;"></pre>
+    </div>
+</div>
+
+<div id="api" class="row hidden">
+    <div class="col-sm-12 col-md-12">
+        <button id="call-api" class="btn btn-success" style="margin-right: 10px;">Call API</button>
+        <pre id="api-response" class="hidden" style="margin-top: 10px;"></pre>
+    </div>
+</div>
+
+@section scripts {
+<script type="text/javascript">
+$(function () {
+    var id_token;
+    var xsrf = document.getElementsByName("__RequestVerificationToken")[0].value;
+
+    $('#get-token').click(function(e) {
+        e.preventDefault();
+        $.ajax({
+            cache: false,
+            url: "/app/token",
+            headers: {
+                'RequestVerificationToken': xsrf
+            }
+        })
+        .done(function (data) {
+            id_token = data.id_token;
+            $('#token-response').text(JSON.stringify(data, null, 2));
+        })
+        .fail(function(xhr) {
+            $('#token-response').text(JSON.stringify(xhr.responseJSON, null, 2));
+        })
+        .always(function () {
+            $('#api').removeClass('hidden');
+            $('#token-response').removeClass('hidden');
+        });
+    });
+
+    $('#call-api').click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            cache: false,
+            url: "/api/demoapi",
+            headers: {
+                'Authorization': 'Bearer ' + id_token
+            }
+        })
+        .done(function (data) {
+            id_token = data.id_token;
+            $('#api-response').text(JSON.stringify(data, null, 2));
+        })
+        .fail(function (xhr) {
+            $('#api-response').text(JSON.stringify(xhr.responseJSON, null, 2));
+        })
+        .always(function () {
+            $('#api-response').removeClass('hidden');
+        });
+    });
+});
+</script>   
+}
