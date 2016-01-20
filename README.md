@@ -19,3 +19,4 @@ This sample implements a scenario requested by a customer where:
  - `Controllers\AppController.cs`: The ASP.NET MVC controller which is secured. The `Token` endpoint here exposes the token of the current user (and preventing CSRF attacks).
  - `Controllers\DemoApiController.cs`: The ASP.NET Web API controller secured with Bearer Tokens.
  - `Filters\AntiForgeryHeaderAttribute.cs`: A custom filter that will get the anti forgery token from a header and compare it to the anti forgery cookie.
+ - `Views/App/Index.cshtml`: the "SPA" with some jQuery code that will first retrieve the token and then call the API with that token
