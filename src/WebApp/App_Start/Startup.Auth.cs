@@ -62,6 +62,7 @@ namespace WebApp
                 clientSecret: System.Configuration.ConfigurationManager.AppSettings["auth0:ClientSecret"],
                 domain: System.Configuration.ConfigurationManager.AppSettings["auth0:Domain"],
                 saveIdToken: true,
+                saveRefreshToken: true,
                 provider: provider);
         }
     }
